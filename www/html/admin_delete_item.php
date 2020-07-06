@@ -5,6 +5,8 @@ require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
 require_once MODEL_PATH . 'item.php';
+// iframe読込禁止
+header('X-FRAME-OPTIONS: DENY');
 // セッション開始
 session_start();
 // ログインしていなければログイン画面へリダイレクト
@@ -19,17 +21,18 @@ $user = get_login_user($db);
 if(is_admin($user) === false){
   redirect_to(LOGIN_URL);
 }
-// POST値取得
-$item_id = get_post('item_id');
-
-// item_id照会：商品テーブルから商品削除
-if(destroy_item($db, $item_id) === true){
-  // 正常メッセージ
-  set_message('商品を削除しました。');
-} else {
-  // 異常メッセージ
-  set_error('商品削除に失敗しました。');
+// トークンのバリデーション
+if(is_valid_token() === true){
+  // POST値取得
+  $item_id = get_post('item_id');
+  // item_id照会：商品テーブルから商品削除
+  if(destroy_item($db, $item_id) === true){
+    // 正常メッセージ
+    set_message('商品を削除しました。');
+  } else {
+    // 異常メッセージ
+    set_error('商品削除に失敗しました。');
+  }
 }
-
 // admin.phpにリダイレクト
 redirect_to(ADMIN_URL);

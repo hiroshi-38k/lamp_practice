@@ -115,9 +115,25 @@ function delete_image($filename){
   return false;
   
 }
-
-
-
+// トークン生成
+function get_token(){
+  // 乱数でトークン生成
+  $token = get_random_string();
+  // セッションへ格納
+  set_session('token', $token);
+  return $token;
+}
+// トークンのバリデーション
+function is_valid_token(){
+  // 送信トークン取得
+  $token = get_post('token');
+  if($token === ''){
+    return false;
+  }
+  // セッションに格納したトークンと等しければtrue, 異なればfalse
+  return $token === get_session('token');
+}
+// 文字数チェック
 function is_valid_length($string, $minimum_length, $maximum_length = PHP_INT_MAX){
   $length = mb_strlen($string);
   return ($minimum_length <= $length) && ($length <= $maximum_length);
