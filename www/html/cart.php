@@ -8,6 +8,8 @@ require_once MODEL_PATH . 'item.php';
 require_once MODEL_PATH . 'cart.php';
 // セッション開始
 session_start();
+// トークン生成
+$token = get_token();
 // ログインしていなければログイン画面へリダイレクト
 if(is_logined() === false){
   redirect_to(LOGIN_URL);

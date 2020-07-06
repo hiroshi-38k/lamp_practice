@@ -5,6 +5,8 @@ require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 // セッション開始
 session_start();
+// トークン生成
+$token = get_token();
 // ログインしていない場合ログイン画面にリダイレクト
 if(is_logined() === true){
   redirect_to(HOME_URL);

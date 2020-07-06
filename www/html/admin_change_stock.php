@@ -19,16 +19,19 @@ $user = get_login_user($db);
 if(is_admin($user) === false){
   redirect_to(LOGIN_URL);
 }
-// POST値取得
-$item_id = get_post('item_id');
-$stock = get_post('stock');
-// item_id照会：商品テーブルの在庫情報を更新
-if(update_item_stock($db, $item_id, $stock)){
-  // 正常メッセージ
-  set_message('在庫数を変更しました。');
-} else {
-  // 異常メッセージ
-  set_error('在庫数の変更に失敗しました。');
+// トークンのバリデーション
+if(is_valid_token() === true){
+  // POST値取得
+  $item_id = get_post('item_id');
+  $stock = get_post('stock');
+  // item_id照会：商品テーブルの在庫情報を更新
+  if(update_item_stock($db, $item_id, $stock)){
+    // 正常メッセージ
+    set_message('在庫数を変更しました。');
+  } else {
+    // 異常メッセージ
+    set_error('在庫数の変更に失敗しました。');
+  }
+  // admin.phpへリダイレクト
+  redirect_to(ADMIN_URL);
 }
-// admin.phpへリダイレクト
-redirect_to(ADMIN_URL);

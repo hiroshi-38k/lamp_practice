@@ -12,20 +12,22 @@ session_start();
 if(is_logined() === false){
   redirect_to(LOGIN_URL);
 }
-// DB接続
-$db = get_db_connect();
-// ログインユーザ情報取得
-$user = get_login_user($db);
-
-// POST値取得
-$item_id = get_post('item_id');
-// カートに商品追加
-if(add_cart($db,$user['user_id'], $item_id)){
-  // 正常メッセージ
-  set_message('カートに商品を追加しました。');
-} else {
-  // 異常メッセージ
-  set_error('カートの更新に失敗しました。');
+// トークンのバリデーション
+if(is_valid_token() === true){
+  // DB接続
+  $db = get_db_connect();
+  // ログインユーザ情報取得
+  $user = get_login_user($db);
+  // POST値取得
+  $item_id = get_post('item_id');
+  // カートに商品追加
+  if(add_cart($db,$user['user_id'], $item_id)){
+    // 正常メッセージ
+    set_message('カートに商品を追加しました。');
+  } else {
+    // 異常メッセージ
+    set_error('カートの更新に失敗しました。');
+  }
 }
 // ホームページにリダイレクト
 redirect_to(HOME_URL);

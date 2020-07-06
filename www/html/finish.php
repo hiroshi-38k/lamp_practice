@@ -12,6 +12,10 @@ session_start();
 if(is_logined() === false){
   redirect_to(LOGIN_URL);
 }
+// トークンのバリデーション
+if(is_valid_token() === false){
+  redirect_to(CART_URL);
+}
 // DB接続
 $db = get_db_connect();
 // ログインユーザ情報取得

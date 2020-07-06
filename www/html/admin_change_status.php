@@ -19,24 +19,26 @@ $user = get_login_user($db);
 if(is_admin($user) === false){
   redirect_to(LOGIN_URL);
 }
-// POST値取得
-$item_id = get_post('item_id');
-$changes_to = get_post('changes_to');
-// ステータス変更
-if($changes_to === 'open'){
-  // open -> close
-  update_item_status($db, $item_id, ITEM_STATUS_OPEN);
-  // 正常メッセージ
-  set_message('ステータスを変更しました。');
-}else if($changes_to === 'close'){
-  // close -> open
-  update_item_status($db, $item_id, ITEM_STATUS_CLOSE);
-  // 正常メッセージ
-  set_message('ステータスを変更しました。');
-}else {
-  // 異常メッセージ
-  set_error('不正なリクエストです。');
+// トークンのバリデーション
+if(is_valid_token() === true){
+  // POST値取得
+  $item_id = get_post('item_id');
+  $changes_to = get_post('changes_to');
+  // ステータス変更
+  if($changes_to === 'open'){
+    // open -> close
+    update_item_status($db, $item_id, ITEM_STATUS_OPEN);
+    // 正常メッセージ
+    set_message('ステータスを変更しました。');
+  }else if($changes_to === 'close'){
+    // close -> open
+    update_item_status($db, $item_id, ITEM_STATUS_CLOSE);
+    // 正常メッセージ
+    set_message('ステータスを変更しました。');
+  }else {
+    // 異常メッセージ
+    set_error('不正なリクエストです。');
+  }
 }
-
 // admin.phpへリダイレクト
 redirect_to(ADMIN_URL);
