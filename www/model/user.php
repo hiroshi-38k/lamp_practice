@@ -13,11 +13,11 @@ function get_user($db, $user_id){
     FROM
       users
     WHERE
-      user_id = {$user_id}
+      user_id = ?
     LIMIT 1
   ";
   // クエリを実行し、成功すればレコード1行（１次元）を返し、失敗すればfalseを返す
-  return fetch_query($db, $sql);
+  return fetch_query($db, $sql, array($user_id));
 }
 // ユーザ名照会：ユーザ情報取得（1行のみ）
 function get_user_by_name($db, $name){
@@ -31,11 +31,11 @@ function get_user_by_name($db, $name){
     FROM
       users
     WHERE
-      name = '{$name}'
+      name = ?
     LIMIT 1
   ";
   // クエリを実行し、成功すればレコード1行（１次元）を返し、失敗すればfalseを返す
-  return fetch_query($db, $sql);
+  return fetch_query($db, $sql, array($name));
 }
 // ログイン処理
 function login_as($db, $name, $password){
@@ -118,9 +118,9 @@ function insert_user($db, $name, $password){
   $sql = "
     INSERT INTO
       users(name, password)
-    VALUES ('{$name}', '{$password}');
+    VALUES (?, ?);
   ";
   // クエリを実行し、成功すればtrue、失敗すればfalseを返す
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, array($name, $password));
 }
 
