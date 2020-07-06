@@ -120,19 +120,18 @@ function get_token(){
   // 乱数でトークン生成
   $token = get_random_string();
   // セッションへ格納
-  $_SESSION['token'] = $token;
+  set_session('token', $token);
   return $token;
 }
 // トークンのバリデーション
 function is_valid_token(){
   // 送信トークン取得
   $token = get_post('token');
-  // セッションに格納したトークンと比較
-  if($token === $_SESSION['token']){
-    return true;
-  } else {
+  if($token === ''){
     return false;
   }
+  // セッションに格納したトークンと等しければtrue, 異なればfalse
+  return $token === get_session('token');
 }
 // 文字数チェック
 function is_valid_length($string, $minimum_length, $maximum_length = PHP_INT_MAX){

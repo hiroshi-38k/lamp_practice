@@ -5,6 +5,8 @@ require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
 require_once MODEL_PATH . 'item.php';
+// iframe読込禁止
+header('X-FRAME-OPTIONS: DENY');
 // セッション開始
 session_start();
 // ログインしていなければログイン画面へリダイレクト
