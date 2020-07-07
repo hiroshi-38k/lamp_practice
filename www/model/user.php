@@ -42,7 +42,7 @@ function login_as($db, $name, $password){
   // ユーザ名からユーザ情報取得
   $user = get_user_by_name($db, $name);
   // ユーザ情報が存在しない、又はパスワードが違う場合falseを返す
-  if($user === false || $user['password'] !== $password){
+  if($user === false || password_verify($password, $user['password']) === false){
     return false;
   }
   // セッションに指定したキーと対応する値を入れる
@@ -62,8 +62,10 @@ function regist_user($db, $name, $password, $password_confirmation) {
   if( is_valid_user($name, $password, $password_confirmation) === false){
     return false;
   }
+  // パスワードのハッシュ化
+  $password_hash = password_hash($password, PASSWORD_DEFAULT);
   // ユーザ情報を新規登録
-  return insert_user($db, $name, $password);
+  return insert_user($db, $name, $password_hash);
 }
 
 function is_admin($user){
@@ -113,7 +115,7 @@ function is_valid_password($password, $password_confirmation){
   return $is_valid;
 }
 // ユーザ情報を新規登録
-function insert_user($db, $name, $password){
+function insert_user($db, $name, $password_hash){
   // SQL文作成
   $sql = "
     INSERT INTO
@@ -121,6 +123,6 @@ function insert_user($db, $name, $password){
     VALUES (?, ?);
   ";
   // クエリを実行し、成功すればtrue、失敗すればfalseを返す
-  return execute_query($db, $sql, array($name, $password));
+  return execute_query($db, $sql, array($name, $password_hash));
 }
 
