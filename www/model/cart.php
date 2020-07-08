@@ -139,7 +139,6 @@ function purchase_carts($db, $carts){
   // ユーザのカート削除
   $err[] = delete_user_carts($db, $carts[0]['user_id']);
   if(in_array(false,$err) === true){
-    var_dump($err);
     $db->rollback();
   } else {
     $db->commit();
@@ -177,7 +176,7 @@ function delete_user_carts($db, $user_id){
       user_id = ?
   ";
   // クエリを実行し、成功すればtrue、失敗すればfalseを返す
-  execute_query($db, $sql, array($user_id));
+  return execute_query($db, $sql, array($user_id));
 }
 
 // カート内の合計金額を取得する
