@@ -116,20 +116,55 @@ function purchase_carts($db, $carts){
   if(validate_cart_purchase($carts) === false){
     return false;
   }
+  $db->beginTransaction();
+  $err = array();
+  // 購入履歴の登録
+  $err[] = regist_history($db, $carts);
+  $history_id = $db->lastInsertId();
   // カート商品ごとに繰り返し処理
   foreach($carts as $cart){
     // 在庫更新
-    if(update_item_stock(
+    if(($err[] = update_item_stock(
         $db, 
         $cart['item_id'], 
         $cart['stock'] - $cart['amount']
-      ) === false){
+      )) === false){
       // 異常メッセージ
       set_error($cart['name'] . 'の購入に失敗しました。');
+    } else {
+      // 購入明細の登録
+      $err[] = regist_details($db, $cart, $history_id);
     }
   }
   // ユーザのカート削除
-  delete_user_carts($db, $carts[0]['user_id']);
+  $err[] = delete_user_carts($db, $carts[0]['user_id']);
+  if(in_array(false,$err) === true){
+    $db->rollback();
+  } else {
+    $db->commit();
+  }
+}
+// 購入履歴の登録
+function regist_history($db, $carts){
+  // SQL文作成
+  $sql = "
+    INSERT INTO
+      histories(user_id)
+    VALUES
+      (?)
+  ";
+  return execute_query($db, $sql, array($carts[0]['user_id']));
+}
+// 購入明細の登録
+function regist_details($db, $cart, $history_id){
+  // SQL文作成
+  $sql = "
+    INSERT INTO
+      details(history_id, item_id, price, amount)
+    VALUES
+      (?, ?, ?, ?)
+  ";
+  return execute_query($db, $sql, array($history_id, $cart['item_id'], $cart['price'], $cart['amount']));
 }
 // ユーザID照会：ユーザのカート削除
 function delete_user_carts($db, $user_id){
@@ -141,7 +176,7 @@ function delete_user_carts($db, $user_id){
       user_id = ?
   ";
   // クエリを実行し、成功すればtrue、失敗すればfalseを返す
-  execute_query($db, $sql, array($user_id));
+  return execute_query($db, $sql, array($user_id));
 }
 
 // カート内の合計金額を取得する
