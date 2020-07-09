@@ -11,7 +11,7 @@
   <div class="container">
     <h1>商品一覧</h1>
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
-    <form action="index_change_order.php" method="post">
+    <form class="text-right" action="index_change_order.php" method="post">
       <input type="hidden" name="token" value="<?php print $token; ?>">
       <select name="change_order">
         <option value="">新着順</option>
