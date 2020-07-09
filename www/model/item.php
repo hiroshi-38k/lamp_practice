@@ -3,7 +3,7 @@ require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
 // DB利用
-
+// 指定の商品情報取得
 function get_item($db, $item_id){
   $sql = "
     SELECT
@@ -22,7 +22,7 @@ function get_item($db, $item_id){
   return fetch_query($db, $sql, array($item_id));
 }
 // 商品情報取得
-function get_items($db, $is_open = false){
+function get_items($db, $change_order, $is_open = false){
   // SQL文作成
   $sql = '
     SELECT
@@ -35,22 +35,40 @@ function get_items($db, $is_open = false){
     FROM
       items
   ';
-  // is_open: true で購入可能な商品に絞る
   if($is_open === true){
     $sql .= '
       WHERE status = 1
     ';
   }
+  // 商品の並び順を指定
+  $sql = change_order($sql, $change_order);
   // クエリを実行し、成功すればレコード全て（２次元）を返し、失敗すればfalseを返す
   return fetch_all_query($db, $sql);
 }
 // 全商品情報を取得
-function get_all_items($db){
-  return get_items($db);
+function get_all_items($db, $change_order = ""){
+  return get_items($db, $change_order = "");
 }
 // 購入可能な商品の情報を取得
-function get_open_items($db){
-  return get_items($db, true);
+function get_open_items($db, $change_order = ""){
+  return get_items($db, $change_order, true);
+}
+// 商品の並び順を指定
+function change_order($sql, $change_order){
+  if($change_order === "low_price"){
+    $sql .= "
+      ORDER BY price ASC
+    ";
+  } else if($change_order === "high_price") {
+    $sql .= "
+      ORDER BY price DESC
+    ";
+  } else {
+    $sql .= "
+      ORDER BY item_id DESC
+    ";
+  }
+  return $sql;
 }
 // 商品テーブルに商品登録
 function regist_item($db, $name, $price, $stock, $status, $image){

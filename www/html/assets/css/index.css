@@ -1,4 +1,6 @@
 .item {
   margin-top: 10px;
 }
-
+form {
+  text-align: right;
+}
