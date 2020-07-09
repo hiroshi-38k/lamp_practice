@@ -24,7 +24,7 @@ function get_user_carts($db, $user_id){
     WHERE
       carts.user_id = ?
   ";
-  // クエリを実行して、成功すればtrue、失敗すればfalseを返す
+  // クエリを実行し、成功すればレコード全て（２次元）を返し、失敗すればfalseを返す
   return fetch_all_query($db, $sql, array($user_id));
 }
 // ユーザID・商品ID照会：指定した商品がカートに存在するか確認
