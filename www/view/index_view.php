@@ -2,18 +2,24 @@
 <html lang="ja">
 <head>
   <?php include VIEW_PATH . 'templates/head.php'; ?>
-  
-  <title>商品一覧</title>
   <link rel="stylesheet" href="<?php print(STYLESHEET_PATH . 'index.css'); ?>">
+  <title>商品一覧</title>
 </head>
 <body>
   <?php include VIEW_PATH . 'templates/header_logined.php'; ?>
-  
 
   <div class="container">
     <h1>商品一覧</h1>
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
-
+    <form class="text-right" action="index_change_order.php" method="post">
+      <input type="hidden" name="token" value="<?php print $token; ?>">
+      <select name="change_order">
+        <option value="">新着順</option>
+        <option value="low_price">価格の安い順</option>
+        <option value="high_price">価格の高い順</option>
+      </select>
+      <input type="submit" value="並べ替え">
+    </form>
     <div class="card-deck">
       <div class="row">
       <?php foreach($items as $item){ ?>
