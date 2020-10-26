@@ -21,7 +21,7 @@ if(is_valid_token() === true){
   $db = get_db_connect();
   // ログイン処理
   $user = login_as($db, $name, $password);
-  if( $user === false){
+  if($user === false){
     // 異常メッセージ
     set_error('ログインに失敗しました。');
     // ログイン画面にリダイレクト

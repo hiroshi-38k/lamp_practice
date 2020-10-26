@@ -1,3 +1,22 @@
+.adj_list{
+  width: 1000px;
+}
 .item {
+  min-width: 0.01px;
   margin-top: 10px;
+  flex-basis: 50%;
+}
+.flex{
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 100px;
+}
+* {
+  min-height: 0.01px;
+}
+img {
+  width: 440px; /*元の画像サイズを超えないように*/
+  height: 296px;/*横幅に合わせて縦幅を調整*/
+  vertical-align: bottom; /*画像を下付にする*/
+  display: block; /*ブラウザによってinline要素と認識されるのを防ぐ*/
 }

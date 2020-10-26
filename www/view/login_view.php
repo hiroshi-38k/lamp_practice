@@ -24,6 +24,9 @@
       </div>
       <input type="submit" value="ログイン" class="btn btn-primary">
     </form>
+    <p>(1) 本ページは架空のECサイトです。</p>
+    <p>(2) お好きなユーザー名・パスワードを登録し、ログインしてください。</p>
+    <p>(3) 名前「adminuser」、パスワード「ecadmin2020」でログインすると、管理者として商品管理機能が利用できます。</p>
   </div>
 </body>
 </html>

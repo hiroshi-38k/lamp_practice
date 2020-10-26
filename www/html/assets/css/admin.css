@@ -19,3 +19,7 @@
 input[type=number]{
   width: 10em;
 }
+img{
+  width: 224px;
+  height: 150px;
+}
