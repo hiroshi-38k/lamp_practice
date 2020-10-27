@@ -11,8 +11,8 @@ define('IMAGE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/assets/images/');
 //define('DB_HOST', 'mysql');
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'sample');
-define('DB_USER', 'mhiroshi38k');
-define('DB_PASS', 'hgoi625uyf084');
+define('DB_USER', '****');
+define('DB_PASS', '****');
 define('DB_CHARSET', 'utf8');
 
 define('SIGNUP_URL', '/signup.php');
